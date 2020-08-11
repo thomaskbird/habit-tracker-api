@@ -3,20 +3,21 @@
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthenticationController extends Controller {
     public function login_request(Request $request) {
         $input = $request->except('_token');
 
-        $validated = $request->validate([
+        $validator = Validator::make($input, [
             'email' => 'required|unique:users',
             'password' => 'required'
         ]);
 
-        if($validated->fails()) {
+        if($validator->fails()) {
             return response(json_encode([
                 'status' => 'error',
-                'errors' => $validated->errors()
+                'errors' => $validator->errors()
             ]));
         } else {
             if(Auth::attempt($input)) {
