@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+use App\Http\Models\User;
+
 class AuthenticationController extends Controller {
     public function login_request(Request $request) {
         $input = $request->except('_token');
