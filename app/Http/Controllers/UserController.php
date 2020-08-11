@@ -1,4 +1,6 @@
-<?php App\Http\Controllers;
+<?php namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller {
     public function user_request($id) {
