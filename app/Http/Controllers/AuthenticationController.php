@@ -10,7 +10,7 @@ class AuthenticationController extends Controller {
         $input = $request->except('_token');
 
         $validator = Validator::make($input, [
-            'email' => 'required|unique:users',
+            'email' => 'required',
             'password' => 'required'
         ]);
 
