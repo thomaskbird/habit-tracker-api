@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Controller;
 
+use App\Http\Models\User;
+
 class UserController extends Controller {
     public function user_request($id) {
         if($id) {
