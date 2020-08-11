@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticationController extends Controller {
     public function login_request(Request $request) {
         $input = $request->except('_token');
-        print_r($input);
 
         $validated = $request->validate([
             'email' => 'required|unique:users',
