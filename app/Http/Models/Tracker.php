@@ -9,6 +9,6 @@ class Tracker extends Model {
      * @var array
      */
     protected $fillable = [
-        'user_id', 'name', 'description'
+        'user_id', 'name', 'description', 'type'
     ];
 }
