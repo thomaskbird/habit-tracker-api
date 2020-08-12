@@ -11,7 +11,7 @@ class TrackerController extends Controller {
         $input = $request->except('_token');
 
         $validator = Validator::make($input, [
-            'name' => 'required|unique:foo'
+            'name' => 'required|unique:trackers'
         ]);
 
         if($validator->fails()) {
