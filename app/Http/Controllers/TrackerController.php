@@ -20,6 +20,7 @@ class TrackerController extends Controller {
                 'errors' => $validator->errors()
             ]));
         } else {
+            $input['user_id'] = 1;
             $tracker = Tracker::create($input);
 
             if($tracker) {
