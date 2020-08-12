@@ -1,0 +1,42 @@
+<?php namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+
+use App\Http\Models\Tracker;
+
+class TrackerController extends Controller {
+    public function tracker_create(Request $request) {
+        $input = $request->except('_token');
+
+        $validator = Validator::make($input, [
+            'name' => 'required|unique:trackers'
+        ]);
+
+        if($validator->fails()) {
+            return response(json_encode([
+                'status' => 'error',
+                'errors' => $validator->errors()
+            ]));
+        } else {
+            $tracker = Tracker::create($input);
+
+            if($tracker) {
+                return response(json_encode([
+                    'status' => 'success',
+                    'payload' => [
+                        'tracker' => $tracker
+                    ]
+                ]));
+            } else {
+                return response(json_encode([
+                    'status' => 'error',
+                    'errors' => [
+                        'Uh oh, something went wrong please try again!'
+                    ]
+                ]));
+            }
+        }
+    }
+}
