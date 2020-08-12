@@ -41,4 +41,14 @@ class TrackerController extends Controller {
             }
         }
     }
+
+    public function tracker_list() {
+        $trackers = Tracker::all();
+        return response(json_encode([
+            'status' => 'success',
+            'payload' => [
+                'trackers' => $trackers
+            ]
+        ]));
+    }
 }
