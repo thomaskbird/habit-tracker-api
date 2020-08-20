@@ -15,4 +15,16 @@ class TrackerItemController extends Controller {
             ]
         ]));
     }
+
+    public function tracker_item_remove($tracker_item_id) {
+        $tracker_item_deleted = TrackerItem::find($tracker_item_id);
+        $tracker_item_deleted->delete();
+
+        return response(json_encode([
+            'status' => 'success',
+            'payload' => [
+                'message' => 'Tracker item was removed'
+            ]
+        ]));
+    }
 }
