@@ -11,4 +11,8 @@ class Tracker extends Model {
     protected $fillable = [
         'user_id', 'name', 'description', 'type'
     ];
+
+    public function tracker_items() {
+        return $this->hasMany('App\Http\Models\TrackerItem');
+    }
 }

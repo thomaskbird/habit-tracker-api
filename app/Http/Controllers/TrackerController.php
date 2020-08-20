@@ -44,7 +44,7 @@ class TrackerController extends Controller {
 
     public function tracker_list() {
         $user_id = 1;
-        $trackers = Tracker::where('user_id', $user_id)->orderBy('id', 'desc')->get();
+        $trackers = Tracker::with(['tracker_items'])->where('user_id', $user_id)->orderBy('id', 'desc')->get();
         return response(json_encode([
             'status' => 'success',
             'payload' => [
