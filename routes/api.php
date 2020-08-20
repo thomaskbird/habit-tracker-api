@@ -21,4 +21,5 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', ['as' => 'login_request', 'uses' => 'AuthenticationController@login_request']);
 Route::post('/tracker/create', ['as' => 'tracker_create', 'uses' => 'TrackerController@tracker_create']);
 Route::get('/trackers', ['as' => 'tracker_list', 'uses' => 'TrackerController@tracker_list']);
+Route::get('/trackers/{id}', ['as' => 'tracker_single', 'uses' => 'TrackerController@tracker_single']);
 Route::get('/user/{id}', ['as' => 'user_request', 'uses' => 'UserController@user_request']);

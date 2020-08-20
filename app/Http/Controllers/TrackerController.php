@@ -43,11 +43,23 @@ class TrackerController extends Controller {
     }
 
     public function tracker_list() {
-        $trackers = Tracker::all();
+        $user_id = 1;
+        $trackers = Tracker::where('user_id', $user_id)->get();
         return response(json_encode([
             'status' => 'success',
             'payload' => [
                 'trackers' => $trackers
+            ]
+        ]));
+    }
+
+    public function tracker_single($id) {
+        $tracker = Tracker::find($id);
+
+        return response(json_encode([
+            'status' => 'success',
+            'payload' => [
+                'tracker' => $tracker
             ]
         ]));
     }
