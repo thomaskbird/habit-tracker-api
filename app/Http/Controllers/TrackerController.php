@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -42,8 +43,8 @@ class TrackerController extends Controller {
         }
     }
 
-    public function tracker_list() {
-        $user_id = 1;
+    public function tracker_list(Request $request) {
+        $user_id = $this->getUserIdFromToken($request->bearerToken());
         $trackers = Tracker::where('user_id', $user_id)->orderBy('id', 'desc')->get();
         return response(json_encode([
             'status' => 'success',
@@ -54,7 +55,15 @@ class TrackerController extends Controller {
     }
 
     public function tracker_single($id) {
-        $tracker = Tracker::with(['tracker_items'])->find($id);
+//        $start = $start .' 00:00:00';
+//        $end = $end .' 23:59:59';
+
+        $tracker = Tracker::whereBetween('created_at', [now(), now()->addDays(7)])
+            ->orderBy('created_at')
+            ->get()
+            ->groupBy(function($val) {
+                return Carbon::parse($val->created_at)->format('d');
+            });
 
         return response(json_encode([
             'status' => 'success',
