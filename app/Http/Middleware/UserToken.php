@@ -24,9 +24,8 @@ class UserToken extends Controller
 
             $user = User::find($parts[0]);
 
-            if($user->api_token === $token && $this->timestamp() < $parts[2]) {
+            if($user->api_token === $token && $this->timestamp() < $parts[1]) {
                 $request->user_id = $parts[0];
-                $request->account_ids = $parts[1];
                 return $next($request);
             } else {
                 return response(['Errors' => ['You don\'t appear to be logged in, please login and try again']], 401);
