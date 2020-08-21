@@ -45,7 +45,7 @@ class AuthenticationController extends Controller {
             if($user) {
                 if(Auth::attempt($input)) {
 
-                    $account_string = implode('-', Auth::user()->accounts->pluck('id')->toArray());
+                    $account_string = implode('-', Auth::id());
 
                     $expiration = date('Y-m-d H:i:s', strtotime("+7 day"));
                     $api_token = base64_encode(Auth::id() .'||'. $account_string .'||'. $expiration);
