@@ -59,7 +59,8 @@ class TrackerController extends Controller {
 //        $start = $start .' 00:00:00';
 //        $end = $end .' 23:59:59';
 
-        $tracker = TrackerItem::whereBetween('created_at', [now()->subDays(7), now()])
+        $tracker = Tracker::with('tracker_items')->find($id);
+        $tracker_items = TrackerItem::whereBetween('created_at', [now()->subDays(7), now()])
             ->orderBy('created_at')
             ->get()
             ->groupBy(function($val) {
@@ -69,7 +70,8 @@ class TrackerController extends Controller {
         return response(json_encode([
             'status' => 'success',
             'payload' => [
-                'tracker' => $tracker
+                'tracker' => $tracker,
+                'tracker_items' => $tracker_items,
             ]
         ]));
     }
