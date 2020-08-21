@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 use App\Http\Models\Tracker;
+use App\Http\Models\TrackerItem;
 
 class TrackerController extends Controller {
     public function tracker_create(Request $request) {
@@ -58,7 +59,7 @@ class TrackerController extends Controller {
 //        $start = $start .' 00:00:00';
 //        $end = $end .' 23:59:59';
 
-        $tracker = Tracker::whereBetween('created_at', [now(), now()->addDays(7)])
+        $tracker = TrackerItem::whereBetween('created_at', [now(), now()->addDays(7)])
             ->orderBy('created_at')
             ->get()
             ->groupBy(function($val) {
