@@ -59,7 +59,7 @@ class TrackerController extends Controller {
 //        $start = $start .' 00:00:00';
 //        $end = $end .' 23:59:59';
 
-        $tracker = TrackerItem::whereBetween('created_at', [now(), now()->subDays(7)])
+        $tracker = TrackerItem::whereBetween('created_at', [now()->subDays(7), now()])
             ->orderBy('created_at')
             ->get()
             ->groupBy(function($val) {
