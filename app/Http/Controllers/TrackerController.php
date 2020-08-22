@@ -59,7 +59,9 @@ class TrackerController extends Controller {
 //        $start = $start .' 00:00:00';
 //        $end = $end .' 23:59:59';
 
-        $tracker = Tracker::with('tracker_items')->find($id);
+        $tracker = Tracker::with(['tracker_items' => function($query) {
+            return $query->orderBy('created_at', 'desc');
+        }])->find($id);
         $tracker_items = TrackerItem::where('tracker_id', $id)->whereBetween('created_at', [now()->subDays(7), now()])
             ->orderBy('created_at')
             ->get()
