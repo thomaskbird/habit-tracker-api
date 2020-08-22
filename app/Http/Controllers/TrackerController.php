@@ -77,4 +77,24 @@ class TrackerController extends Controller {
             ]
         ]));
     }
+
+    public function tracker_remove($id) {
+        $tracker = Tracker::find($id);
+        if($tracker) {
+            $tracker->delete();
+            return response(json_encode([
+                'status' => 'success',
+                'payload' => [
+                    'message' => 'Tracker item was removed'
+                ]
+            ]));
+        } else {
+            return response(json_encode([
+                'status' => 'error',
+                'errors' => [
+                    'Uh oh, something went wrong please try again!'
+                ]
+            ]));
+        }
+    }
 }
