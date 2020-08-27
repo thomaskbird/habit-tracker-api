@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+date_default_timezone_set('America/Detroit');
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
