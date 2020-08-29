@@ -66,7 +66,7 @@ class TrackerController extends Controller {
             ->orderBy('created_at')
             ->get()
             ->groupBy(function($val) {
-                return Carbon::parse($val->created_at)->format('m') .'/'. Carbon::parse($val->created_at)->format('d');
+                return Carbon::parse($val->created_at)->format('Y') .'-'. Carbon::parse($val->created_at)->format('m') .'-'. Carbon::parse($val->created_at)->format('d');
             });
 
         return response(json_encode([
