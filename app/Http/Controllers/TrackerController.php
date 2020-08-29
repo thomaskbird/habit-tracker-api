@@ -55,14 +55,18 @@ class TrackerController extends Controller {
         ]));
     }
 
-    public function tracker_single($id) {
+    public function tracker_single($id, $range = 7) {
 //        $start = $start .' 00:00:00';
 //        $end = $end .' 23:59:59';
 
-        $tracker = Tracker::with(['tracker_items' => function($query) {
-            return $query->orderBy('created_at', 'desc');
+        $tracker = Tracker::with(['tracker_items' => function($query) use ($range) {
+            return $query
+                ->whereBetween('created_at', [now()->subDays($range), now()])
+                ->get()
+                ->orderBy('created_at', 'desc');
         }])->find($id);
-        $tracker_items = TrackerItem::where('tracker_id', $id)->whereBetween('created_at', [now()->subDays(7), now()])
+        $tracker_items = TrackerItem::where('tracker_id', $id)
+            ->whereBetween('created_at', [now()->subDays($range), now()])
             ->orderBy('created_at')
             ->get()
             ->groupBy(function($val) {
