@@ -56,9 +56,6 @@ class TrackerController extends Controller {
     }
 
     public function tracker_single($id, $range = 7) {
-//        $start = $start .' 00:00:00';
-//        $end = $end .' 23:59:59';
-
         $tracker = Tracker::with(['tracker_items' => function($query) use ($range) {
             return $query
                 ->whereBetween('created_at', [now()->subDays($range), now()])
@@ -69,7 +66,7 @@ class TrackerController extends Controller {
             ->orderBy('created_at')
             ->get()
             ->groupBy(function($val) {
-                return Carbon::parse($val->created_at)->format('d');
+                return Carbon::parse($val->created_at)->format('m') .'/'. Carbon::parse($val->created_at)->format('d');
             });
 
         return response(json_encode([
