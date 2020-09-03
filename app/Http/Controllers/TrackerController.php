@@ -62,8 +62,11 @@ class TrackerController extends Controller {
             return $query
                 ->whereBetween('created_at', [now()->subDays(7), now()])
                 ->orderBy('created_at', 'desc');
-        }])->with(['tracker_items_chart_data' => function($query) {
-            return $query->whereBetween('created_at', [now()->subDays(7), now()])
+        }])->with(['chart_data' => function($query) {
+            return $query
+                ->select('COUNT(*) as count')
+                ->whereBetween('created_at', [now()
+                ->subDays(7), now()])
                 ->orderBy('created_at')
                 ->get()
                 ->groupBy(function($val) {
