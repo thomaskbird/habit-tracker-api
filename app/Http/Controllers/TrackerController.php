@@ -70,7 +70,8 @@ class TrackerController extends Controller {
                     return Carbon::parse($val->created_at)
                             ->format('Y') .'-'. Carbon::parse($val->created_at)->format('m') .'-'. Carbon::parse($val->created_at)->format('d');
                 });
-        }])->where('user_id', $user_id);
+        }])->where('user_id', $user_id)
+        ->get();
 
         return response(json_encode([
             'status' => 'success',
