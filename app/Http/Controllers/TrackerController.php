@@ -55,6 +55,28 @@ class TrackerController extends Controller {
         ]));
     }
 
+    public function tracker_list_new_format() {
+        $tracker = Tracker::with(['tracker_items' => function($query) {
+            return $query
+                ->whereBetween('created_at', [now()->subDays(7), now()])
+                ->orderBy('created_at', 'desc');
+        }])->get();
+        $tracker_items = TrackerItem::whereBetween('created_at', [now()->subDays(7), now()])
+            ->orderBy('created_at')
+            ->get()
+            ->groupBy(function($val) {
+                return Carbon::parse($val->created_at)->format('Y') .'-'. Carbon::parse($val->created_at)->format('m') .'-'. Carbon::parse($val->created_at)->format('d');
+            });
+
+        return response(json_encode([
+            'status' => 'success',
+            'payload' => [
+                'tracker' => $tracker,
+                'tracker_items' => $tracker_items,
+            ]
+        ]));
+    }
+
     public function tracker_single($id, $range = 7) {
         $tracker = Tracker::with(['tracker_items' => function($query) use ($range) {
             return $query

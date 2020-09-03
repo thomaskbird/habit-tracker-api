@@ -30,6 +30,7 @@ route::post('reset-password/{reset_token}', ['as' => 'action_reset_password', 'u
 route::middleware(['apiToken'])->group(function() {
     Route::post('/tracker/create', ['as' => 'tracker_create', 'uses' => 'TrackerController@tracker_create']);
     Route::get('/trackers', ['as' => 'tracker_list', 'uses' => 'TrackerController@tracker_list']);
+    Route::get('/trackers/new-format', ['as' => 'tracker_list_new_format', 'uses' => 'TrackerController@tracker_list_new_format']);
     Route::get('/trackers/remove/{id}', ['as' => 'tracker_remove', 'uses' => 'TrackerController@tracker_remove']);
     Route::get('/trackers/{id}/{range}', ['as' => 'tracker_single', 'uses' => 'TrackerController@tracker_single']);
     Route::get('/tracker-item/remove/{tracker_item_id}', ['as' => 'tracker_item_remove', 'uses' => 'TrackerItemController@tracker_item_remove']);
