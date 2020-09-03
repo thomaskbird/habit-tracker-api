@@ -16,7 +16,7 @@ class Tracker extends Model {
         return $this->hasMany('App\Http\Models\TrackerItem');
     }
 
-    public function tracker_items_chart_data() {
+    public function chart_data() {
         return $this->hasMany('App\Http\Models\TrackerItem');
     }
 }
