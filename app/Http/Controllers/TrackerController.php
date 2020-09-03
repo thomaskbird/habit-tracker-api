@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -64,7 +65,7 @@ class TrackerController extends Controller {
                 ->orderBy('created_at', 'desc');
         }])->with(['chart_data' => function($query) {
             return $query
-                ->select('COUNT(*) as count')
+                ->select(DB::raw('COUNT(*) as count'))
                 ->whereBetween('created_at', [now()
                 ->subDays(7), now()])
                 ->orderBy('created_at')
