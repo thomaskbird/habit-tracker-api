@@ -59,9 +59,9 @@ class TrackerController extends Controller {
     /**
      * chart data interface
      *
-     *  id
-     *  label
-     *  count
+     *  id - YYYY-MM-DD
+     *  label - MM/DD
+     *  count - number
      */
 
     public function tracker_list_new_format(Request $request, $range = 7) {
@@ -76,17 +76,29 @@ class TrackerController extends Controller {
         ->get();
 
         foreach($trackers as $tracker) {
-            $tracker_items = TrackerItem::where('tracker_id', $tracker->id)
-                ->whereBetween('created_at', [now()->subDays($range), now()])
-                ->get();
+            $formatted_data = $tracker->toArray();
+            $chart_data = [];
 
-            $tracker_formatting = [
-                'tracker' => $tracker,
-                'tracker_items' => $tracker_items,
-            ];
+            for($i = 0; $i < $range; $i++) {
+                if($i === 0) {
+                    $today = now()->toDateString();
+                    $chart_data['id'] = $today;
+                    $chart_data['label'] = now()->format('m/d');
+                    $chart_data['count'] = count($this->findMatching($today, $tracker->tracker_items));
+                } else {
+                    $past = now()->subDays($i);
+                    $chart_data['id'] = $past;
+                    $chart_data['label'] = $past->format('m/d');
+                    $chart_data['count'] = count($this->findMatching($past, $tracker->tracker_items));
+                }
+            }
 
-            array_push($tracker_return, $tracker_formatting);
+            $formatted_data['chart_data'] = $chart_data;
+
+            array_push($tracker_return, $formatted_data);
         }
+
+
 
         print_r($tracker_return);exit;
 
@@ -96,6 +108,20 @@ class TrackerController extends Controller {
                 'trackers' => $trackers,
             ]
         ]));
+    }
+
+    private function findMatching($timestamp, $items) {
+        $found = [];
+
+        foreach($items as $item) {
+            $item_timestamp = Carbon::parse($item->created_at);
+
+            if($timestamp === $item_timestamp->format('Y-m-d')) {
+                array_push($found, $item);
+            }
+        }
+
+        return $found;
     }
 
     public function tracker_single($id, $range = 7) {
