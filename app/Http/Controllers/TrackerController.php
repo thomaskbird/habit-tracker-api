@@ -104,14 +104,10 @@ class TrackerController extends Controller {
             array_push($tracker_return, $formatted_data);
         }
 
-
-
-        print_r($tracker_return);exit;
-
         return response(json_encode([
             'status' => 'success',
             'payload' => [
-                'trackers' => $trackers,
+                'trackers' => $tracker_return,
             ]
         ]));
     }
