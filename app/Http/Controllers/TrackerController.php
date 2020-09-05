@@ -92,7 +92,7 @@ class TrackerController extends Controller {
                     $past = now()->subDays($i);
 
                     array_push($chart_data, [
-                        'id' => $past,
+                        'id' => $past->format('Y-m-d'),
                         'label' => $past->format('m/d'),
                         'count' => count($this->findMatching($past, $tracker->tracker_items))
                     ]);
