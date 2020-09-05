@@ -82,14 +82,20 @@ class TrackerController extends Controller {
             for($i = 0; $i < $range; $i++) {
                 if($i === 0) {
                     $today = now()->toDateString();
-                    $chart_data['id'] = $today;
-                    $chart_data['label'] = now()->format('m/d');
-                    $chart_data['count'] = count($this->findMatching($today, $tracker->tracker_items));
+
+                    array_push($chart_data, [
+                        'id' => $today,
+                        'label' => now()->format('m/d'),
+                        'count' => count($this->findMatching($today, $tracker->tracker_items))
+                    ]);
                 } else {
                     $past = now()->subDays($i);
-                    $chart_data['id'] = $past;
-                    $chart_data['label'] = $past->format('m/d');
-                    $chart_data['count'] = count($this->findMatching($past, $tracker->tracker_items));
+
+                    array_push($chart_data, [
+                        'id' => $past,
+                        'label' => $past->format('m/d'),
+                        'count' => count($this->findMatching($past, $tracker->tracker_items))
+                    ]);
                 }
             }
 
