@@ -83,19 +83,19 @@ class TrackerController extends Controller {
                 if($i === 0) {
                     $today = now()->toDateString();
 
-                    array_push($chart_data, [
+                    $chart_data[$today] = [
                         'id' => $today,
                         'label' => now()->format('m/d'),
                         'count' => count($this->findMatching($today, $tracker->tracker_items))
-                    ]);
+                    ];
                 } else {
                     $past = now()->subDays($i);
 
-                    array_push($chart_data, [
+                    $chart_data[$past->format('Y-m-d')] = [
                         'id' => $past->format('Y-m-d'),
                         'label' => $past->format('m/d'),
                         'count' => count($this->findMatching($past->format('Y-m-d'), $tracker->tracker_items))
-                    ]);
+                    ];
                 }
             }
 
