@@ -66,6 +66,7 @@ class TrackerController extends Controller {
 
     public function tracker_list_new_format(Request $request, $range = 7) {
         $user_id = $this->getUserIdFromToken($request->bearerToken());
+        $tracker_return = [];
 
         $trackers = Tracker::with(['tracker_items' => function($query) use ($range) {
             return $query
@@ -79,8 +80,15 @@ class TrackerController extends Controller {
                 ->whereBetween('created_at', [now()->subDays($range), now()])
                 ->get();
 
-            print_r($tracker_items); exit;
+            $tracker_formatting = [
+                'tracker' => $tracker,
+                'tracker_items' => $tracker_items,
+            ];
+
+            array_push($tracker_return, $tracker_formatting);
         }
+
+        print_r($tracker_return);exit;
 
         return response(json_encode([
             'status' => 'success',
