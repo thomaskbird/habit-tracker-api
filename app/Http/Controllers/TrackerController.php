@@ -56,26 +56,31 @@ class TrackerController extends Controller {
         ]));
     }
 
-    public function tracker_list_new_format(Request $request) {
+    /**
+     * chart data interface
+     *
+     *  id
+     *  label
+     *  count
+     */
+
+    public function tracker_list_new_format(Request $request, $range = 7) {
         $user_id = $this->getUserIdFromToken($request->bearerToken());
 
-        $trackers = Tracker::with(['tracker_items' => function($query) {
+        $trackers = Tracker::with(['tracker_items' => function($query) use ($range) {
             return $query
-                ->whereBetween('created_at', [now()->subDays(7), now()])
+                ->whereBetween('created_at', [now()->subDays($range), now()])
                 ->orderBy('created_at', 'desc');
-        }])->with(['chart_data' => function($query) {
-            return $query
-                ->select(DB::raw('COUNT(*) as count'))
-                ->whereBetween('created_at', [now()
-                ->subDays(7), now()])
-                ->orderBy('created_at')
-                ->get()
-                ->groupBy(function($val) {
-                    return Carbon::parse($val->created_at)
-                            ->format('Y') .'-'. Carbon::parse($val->created_at)->format('m') .'-'. Carbon::parse($val->created_at)->format('d');
-                });
         }])->where('user_id', $user_id)
         ->get();
+
+        foreach($trackers as $tracker) {
+            $tracker_items = TrackerItem::where('tracker_id', $tracker->id)
+                ->whereBetween('created_at', [now()->subDays($range), now()])
+                ->get();
+
+            print_r($tracker_items); exit;
+        }
 
         return response(json_encode([
             'status' => 'success',
