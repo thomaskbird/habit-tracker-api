@@ -82,6 +82,7 @@ class TrackerController extends Controller {
             for($i = 0; $i < $range; $i++) {
                 if($i === 0) {
                     $today = now()->toDateString();
+                    echo 0;
 
                     array_push($chart_data, [
                         'id' => $today,
@@ -89,6 +90,7 @@ class TrackerController extends Controller {
                         'count' => count($this->findMatching($today, $tracker->tracker_items))
                     ]);
                 } else {
+                    echo $i;
                     $past = now()->subDays($i);
 
                     array_push($chart_data, [
