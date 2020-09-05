@@ -101,6 +101,8 @@ class TrackerController extends Controller {
                 }
             }
 
+            exit;
+
             $formatted_data['chart_data'] = $chart_data;
 
             array_push($tracker_return, $formatted_data);
@@ -121,12 +123,10 @@ class TrackerController extends Controller {
     private function findMatching($timestamp, $items) {
         $found = [];
 
+        echo $timestamp;
+
         foreach($items as $item) {
             $item_timestamp = Carbon::parse($item->created_at);
-print_r([
-    $timestamp,
-    $item_timestamp->format('Y-m-d')
-]);
             if($timestamp === $item_timestamp->format('Y-m-d')) {
                 array_push($found, $item);
             }
