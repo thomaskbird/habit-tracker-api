@@ -121,7 +121,10 @@ class TrackerController extends Controller {
 
         foreach($items as $item) {
             $item_timestamp = Carbon::parse($item->created_at);
-
+print_r([
+    $timestamp,
+    $item_timestamp->format('Y-m-d')
+]);
             if($timestamp === $item_timestamp->format('Y-m-d')) {
                 array_push($found, $item);
             }
