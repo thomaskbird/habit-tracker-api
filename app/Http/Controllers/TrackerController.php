@@ -123,7 +123,7 @@ class TrackerController extends Controller {
     private function findMatching($timestamp, $items) {
         $found = [];
 
-        echo $timestamp;
+        echo $timestamp .'<br/>';
 
         foreach($items as $item) {
             $item_timestamp = Carbon::parse($item->created_at);
