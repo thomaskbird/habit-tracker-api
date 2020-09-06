@@ -64,7 +64,7 @@ class TrackerController extends Controller {
      *  count - number
      */
 
-    public function tracker_list_new_format(Request $request, $range = 7) {
+    public function trackers_list(Request $request, $range = 7) {
         $user_id = $this->getUserIdFromToken($request->bearerToken());
         $tracker_return = [];
 
