@@ -9,10 +9,13 @@ class TrackerItemController extends Controller {
 
     public function tracker_item_create(Request $request, $tracker_id) {
         $input = $request->all();
+        $tracker_data = ['tracker_id' => $tracker_id];
 
-        return response(json_encode(isset($input['note'])));
+        if(isset($input['note'])) {
+            $tracker_data['note'] = $input['note'];
+        }
 
-        $tracker_item = TrackerItem::create(['tracker_id' => $tracker_id]);
+        $tracker_item = TrackerItem::create($tracker_data);
         return response(json_encode([
             'status' => 'success',
             'payload' => [
