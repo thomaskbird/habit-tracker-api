@@ -11,5 +11,6 @@ class TrackerItem extends Model {
     protected $fillable = [
         'tracker_id',
         'amount',
+        'note',
     ];
 }

@@ -1,12 +1,16 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use App\Http\Models\TrackerItem;
 
 class TrackerItemController extends Controller {
 
-    public function tracker_item_create($tracker_id) {
+    public function tracker_item_create(Request $request, $tracker_id) {
+        $input = $request->all();
+
+        print_r($input); exit;
         $tracker_item = TrackerItem::create(['tracker_id' => $tracker_id]);
         return response(json_encode([
             'status' => 'success',
