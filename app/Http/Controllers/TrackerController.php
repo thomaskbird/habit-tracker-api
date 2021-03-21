@@ -73,6 +73,7 @@ class TrackerController extends Controller {
                 ->whereBetween('created_at', [now()->subDays($range), now()])
                 ->orderBy('created_at', 'asc');
         }])->where('user_id', $user_id)
+            ->orderBy('created_at', 'asc')
         ->get();
 
         foreach($trackers as $tracker) {
