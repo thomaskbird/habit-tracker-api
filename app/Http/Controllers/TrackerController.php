@@ -71,7 +71,7 @@ class TrackerController extends Controller {
         $trackers = Tracker::with(['tracker_items' => function($query) use ($range) {
             return $query
                 ->whereBetween('created_at', [now()->subDays($range), now()])
-                ->orderBy('created_at', 'desc');
+                ->orderBy('created_at', 'asc');
         }])->where('user_id', $user_id)
         ->get();
 
