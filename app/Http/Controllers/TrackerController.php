@@ -72,9 +72,9 @@ class TrackerController extends Controller {
             return $query
                 ->whereBetween('created_at', [now()->subDays($range), now()])
                 ->orderBy('created_at', 'desc');
-        }])->where('user_id', $user_id)
-            ->orderBy('created_at', 'asc')
-        ->get();
+        }])
+            ->where('user_id', $user_id)
+            ->get();
 
         foreach($trackers as $tracker) {
             $formatted_data = $tracker->toArray();
@@ -100,7 +100,7 @@ class TrackerController extends Controller {
                 }
             }
 
-            $formatted_data['chart_data'] = $chart_data;
+            $formatted_data['chart_data'] = array_reverse($chart_data);
 
             array_push($tracker_return, $formatted_data);
         }
