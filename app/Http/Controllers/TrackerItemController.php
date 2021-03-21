@@ -11,6 +11,7 @@ class TrackerItemController extends Controller {
         $input = $request->all();
 
         print_r($input); exit;
+
         $tracker_item = TrackerItem::create(['tracker_id' => $tracker_id]);
         return response(json_encode([
             'status' => 'success',
