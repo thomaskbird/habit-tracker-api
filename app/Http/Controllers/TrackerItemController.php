@@ -35,4 +35,15 @@ class TrackerItemController extends Controller {
             ]
         ]));
     }
+
+    public function tracker_item_single($tracker_item_id) {
+        $tracker_item = TrackerItem::find($tracker_item_id);
+
+        return response(json_encode([
+            'status' => 'success',
+            'payload' => [
+                'tracker_item' => $tracker_item
+            ]
+        ]));
+    }
 }
