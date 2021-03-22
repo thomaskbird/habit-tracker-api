@@ -34,6 +34,7 @@ route::middleware(['apiToken'])->group(function() {
     Route::get('/trackers/{range}', ['as' => 'trackers_list', 'uses' => 'TrackerController@trackers_list']);
     Route::get('/tracker-item/remove/{tracker_item_id}', ['as' => 'tracker_item_remove', 'uses' => 'TrackerItemController@tracker_item_remove']);
     Route::post('/tracker-item/create/{tracker_id}', ['as' => 'tracker_item_create', 'uses' => 'TrackerItemController@tracker_item_create']);
+    Route::post('/tracker-item/update/{tracker_item_id}', ['as' => 'tracker_item_update', 'uses' => 'TrackerItemController@tracker_item_update']);
     Route::get('/tracker-item/{tracker_item_id}', ['as' => 'tracker_item_single', 'uses' => 'TrackerItemController@tracker_item_single']);
     Route::get('/user/{id}', ['as' => 'user_request', 'uses' => 'UserController@user_request']);
 });

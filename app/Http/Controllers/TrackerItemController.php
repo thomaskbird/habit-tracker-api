@@ -24,6 +24,28 @@ class TrackerItemController extends Controller {
         ]));
     }
 
+    public function tracker_item_update(Request $request, $tracker_item_id) {
+        $input = $request->all();
+        $tracker_item = TrackerItem::find($tracker_item_id);
+
+        if(isset($input['created_at'])) {
+            $tracker_item->created_at = $input['created_at'];
+        }
+
+        if(isset($input['note'])) {
+            $tracker_item->note = $input['note'];
+        }
+
+        $tracker_item->save();
+
+        return response(json_encode([
+            'status' => 'success',
+            'payload' => [
+                'tracker_item' => $tracker_item
+            ]
+        ]));
+    }
+
     public function tracker_item_remove($tracker_item_id) {
         $tracker_item_deleted = TrackerItem::find($tracker_item_id);
         $tracker_item_deleted->delete();
