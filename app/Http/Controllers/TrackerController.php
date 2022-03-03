@@ -151,7 +151,13 @@ class TrackerController extends Controller {
             $sub = $sub + $val;
         }
 
-        return count($found) < 1 ? $found[0] : $sub / count($found);
+        if(count($found) < 1) {
+            return 0;
+        } elseif(count($found) === 1) {
+            return $found[0];
+        } else {
+            return $sub / count($found);
+        }
     }
 
     private function findMatching($timestamp, $items) {
