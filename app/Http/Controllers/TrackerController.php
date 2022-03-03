@@ -63,7 +63,6 @@ class TrackerController extends Controller {
      *  label - MM/DD
      *  count - number
      */
-
     public function trackers_list(Request $request, $range = 7) {
         $user_id = $this->getUserIdFromToken($request->bearerToken());
         $tracker_return = [];
@@ -80,27 +79,51 @@ class TrackerController extends Controller {
             $formatted_data = $tracker->toArray();
             $chart_data = [];
 
-            for($i = 0; $i < $range; $i++) {
-                if($i === 0) {
-                    $today = now()->toDateString();
+            if($tracker['type'] === 'simple-complex') {
+                for($i = 0; $i < $range; $i++) {
+                    if($i === 0) {
+                        $today = now()->toDateString();
 
-                    array_push($chart_data, [
-                        'id' => $today,
-                        'label' => now()->format('m/d'),
-                        'count' => count($this->findMatching($today, $tracker->tracker_items))
-                    ]);
-                } else {
-                    $past = now()->subDays($i);
+                        array_push($chart_data, [
+                            'id' => $today,
+                            'label' => now()->format('m/d'),
+                            'count' => $this->findAverage($today, $tracker->tracker_items)
+                        ]);
+                    } else {
+                        $past = now()->subDays($i);
 
-                    array_push($chart_data, [
-                        'id' => $past->format('Y-m-d'),
-                        'label' => $past->format('m/d'),
-                        'count' => count($this->findMatching($past->format('Y-m-d'), $tracker->tracker_items))
-                    ]);
+                        array_push($chart_data, [
+                            'id' => $past->format('Y-m-d'),
+                            'label' => $past->format('m/d'),
+                            'count' => $this->findAverage($past->format('Y-m-d'), $tracker->tracker_items)
+                        ]);
+                    }
                 }
-            }
 
-            $formatted_data['chart_data'] = array_reverse($chart_data);
+                $formatted_data['chart_data'] = array_reverse($chart_data);
+            } else {
+                for($i = 0; $i < $range; $i++) {
+                    if($i === 0) {
+                        $today = now()->toDateString();
+
+                        array_push($chart_data, [
+                            'id' => $today,
+                            'label' => now()->format('m/d'),
+                            'count' => count($this->findMatching($today, $tracker->tracker_items))
+                        ]);
+                    } else {
+                        $past = now()->subDays($i);
+
+                        array_push($chart_data, [
+                            'id' => $past->format('Y-m-d'),
+                            'label' => $past->format('m/d'),
+                            'count' => count($this->findMatching($past->format('Y-m-d'), $tracker->tracker_items))
+                        ]);
+                    }
+                }
+
+                $formatted_data['chart_data'] = array_reverse($chart_data);
+            }
 
             array_push($tracker_return, $formatted_data);
         }
@@ -111,6 +134,24 @@ class TrackerController extends Controller {
                 'trackers' => $tracker_return,
             ]
         ]));
+    }
+
+    private function findAverage($timestamp, $items) {
+        $found = [];
+        $sub = 0;
+
+        foreach($items as $item) {
+            $item_timestamp = Carbon::parse($item->created_at);
+            if($timestamp === $item_timestamp->format('Y-m-d')) {
+                array_push($found, $item['note']);
+            }
+        }
+
+        foreach($found as $val) {
+            $sub = $sub + $val;
+        }
+
+        return count($found) < 2 ? $found[0] : $sub / count($found);
     }
 
     private function findMatching($timestamp, $items) {
